@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<!-- CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+}
+</style>
+
+</head>
+
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+<!-- 🔝 NAVBAR -->
+<nav class="fixed top-0 w-full z-50 bg-white shadow-sm">
+  <div class="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto">
+
+    <span class="text-xl font-bold">MarketOS</span>
+
+    <!-- ✅ VENDEDOR DINÁMICO (CORREGIDO) -->
+    <div class="text-sm text-gray-600 font-medium">
+      Vendedor: <span id="vendedorActual">Vendedor 1</span>
+    </div>
+
+    <div class="hidden md:flex gap-6">
+      <button onclick="abrirHistorial()">Historial</button>
+      <button onclick="abrirStock()">Stock</button>
+      <button onclick="abrirUsuarios()">Usuarios</button>
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- 🧾 CONTENIDO PRINCIPAL -->
+<main class="flex-1 mt-20 px-4">
+
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- 📦 PRODUCTOS -->
+    <div class="md:col-span-2 flex flex-col gap-4">
+
+      <header>
+        <h1 class="text-3xl font-bold">Punto de Venta</h1>
+        <p class="text-gray-500">Ventas en curso</p>
+      </header>
+
+      <!-- 🔍 BUSCADOR -->
+      <input id="buscador" class="w-full border p-3 rounded-lg" placeholder="Buscar producto...">
+
+      <!-- 📦 LISTA -->
+      <div id="listaProductos" class="flex flex-col gap-2"></div>
+
+    </div>
+
+
+    <!-- 🛒 CARRITO -->
+    <div class="bg-white p-4 rounded-xl shadow h-fit sticky top-24">
+
+      <h2 class="text-xl font-bold mb-3">🛒 Carrito</h2>
+
+      <div id="carritoLista" class="flex flex-col gap-2 text-sm mb-4">
+        <p class="text-gray-500">Vacío</p>
+      </div>
+
+      <div class="border-t pt-3">
+        <div class="flex justify-between text-lg font-bold">
+          <span>Total:</span>
+          <span id="total">$0</span>
+        </div>
+
+        <button onclick="guardarVenta()" 
+          class="w-full mt-3 bg-black text-white p-2 rounded hover:bg-gray-800">
+          Completar venta (+)
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<!-- 📱 NAV MOBILE -->
+<nav class="md:hidden fixed bottom-0 w-full bg-white border-t flex justify-around py-3">
+  <button onclick="abrirVentas()">Venta</button>
+  <button onclick="abrirHistorial()">Historial</button>
+  <button onclick="abrirStock()">Stock</button>
+  <button onclick="abrirUsuarios()">Usuarios</button>
+</nav>
+
+
+<!-- 🪟 MODAL -->
+<div id="modalOverlay"
+     class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+     onclick="cerrarModal()">
+
+  <div id="modalContent"
+       class="bg-white p-6 rounded-xl w-full max-w-md"
+       onclick="event.stopPropagation()">
+  </div>
+
+</div>
+
+
+<!-- 🔗 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/ventas.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/stock.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/historial.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/usuarios.js') }}" defer></script>
+
+<!-- ✅ SCRIPT NAVBAR -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    actualizarVendedorNavbar();
+});
+
+function actualizarVendedorNavbar() {
+    const vendedor = localStorage.getItem("vendedor") || "Vendedor 1";
+    const el = document.getElementById("vendedorActual");
+
+    if (el) {
+        el.innerText = vendedor;
+    }
+}
+
+// disponible globalmente
+window.actualizarVendedorNavbar = actualizarVendedorNavbar;
+</script>
+
+</body>
+</html>
