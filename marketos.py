@@ -292,6 +292,7 @@ def obtener_usuarios():
         {"id": 2, "usuario": "Vendedor 2"}
     ])
 
+# test git
 
 # =========================
 # 🚀 RUN
